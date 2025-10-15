@@ -1,0 +1,15 @@
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/bin/Release/net9.0/Week2Foundations
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/bin/Release/net9.0/Week2Foundations.deps.json
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/bin/Release/net9.0/Week2Foundations.runtimeconfig.json
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/bin/Release/net9.0/Week2Foundations.dll
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/bin/Release/net9.0/Week2Foundations.pdb
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.GeneratedMSBuildEditorConfig.editorconfig
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.AssemblyInfoInputs.cache
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.AssemblyInfo.cs
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.csproj.CoreCompileInputs.cache
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.sourcelink.json
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.dll
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/refint/Week2Foundations.dll
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.pdb
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/Week2Foundations.genruntimeconfig.cache
+/Users/karilaa/Developer/dev260_fall_2025/assignments/week-2-foundations/Week2Foundations/obj/Release/net9.0/ref/Week2Foundations.dll
