@@ -123,10 +123,6 @@ namespace Week3ArraysSorting
                 // Perform lookup
                 PerformLookup(query);
             }
-            
-            Console.WriteLine("Returning to main menu...");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
         
         /// <summary>

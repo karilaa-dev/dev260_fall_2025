@@ -114,9 +114,6 @@ namespace Week3ArraysSorting
                 BookCatalog catalog = new BookCatalog();
                 catalog.LoadBooks(bookFilePath);
                 catalog.StartLookupSession();
-                
-                Console.WriteLine("Press any key to return to main menu...");
-                Console.ReadKey();
             }
             catch (Exception ex)
             {
