@@ -13,7 +13,7 @@ namespace Week3ArraysSorting
         static void Main(string[] args)
         {
             Console.WriteLine("=== Week 3: Arrays & Sorting Assignment ===");
-            Console.WriteLine("by [Your Name Here]");
+            Console.WriteLine("by Kyryl Andreiev");
             Console.WriteLine();
             
             bool keepRunning = true;
@@ -68,7 +68,7 @@ namespace Week3ArraysSorting
             Console.WriteLine();
             
             Console.WriteLine("1. Play Board Game (Part A)");
-            Console.WriteLine("   → Experience multi-dimensional arrays with [The name of your game!]");
+            Console.WriteLine("   → Experience multi-dimensional arrays with Connect Four");
             Console.WriteLine();
             
             Console.WriteLine("2. Book Catalog Lookup (Part B)");
@@ -86,17 +86,8 @@ namespace Week3ArraysSorting
         {
             try
             {
-                // TODO: Create and start your board game
-                // Example structure:
-                // BoardGame game = new BoardGame();
-                // game.StartGame();
-                
-                Console.WriteLine("Starting Board Game...");
-                Console.WriteLine("TODO: Implement board game integration here");
-                
-                // Placeholder for now
-                Console.WriteLine("Press any key to return to main menu...");
-                Console.ReadKey();
+                BoardGame game = new BoardGame();
+                game.StartGame();
             }
             catch (Exception ex)
             {
