@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Week3ArraysSorting
 {
@@ -16,8 +17,6 @@ namespace Week3ArraysSorting
     /// </summary>
     public class BookCatalog
     {
-        #region Data Structures
-        
         // Book storage arrays - parallel arrays that stay synchronized
         private string[] originalTitles;    // Original book titles for display
         private string[] normalizedTitles;  // Normalized titles for sorting/searching
@@ -28,8 +27,6 @@ namespace Week3ArraysSorting
         
         // Book count tracker
         private int bookCount;
-        
-        #endregion
         
         /// <summary>
         /// Constructor - Initialize the book catalog
@@ -74,10 +71,10 @@ namespace Week3ArraysSorting
                 // Step 1 - Load books from file
                 LoadBooksFromFile(filePath);
                 
-                // TODO: Step 2 - Sort using recursive algorithm
+                // Step 2 - Sort using recursive algorithm
                 SortBooksRecursively();
                 
-                // TODO: Step 3 - Build multi-dimensional index
+                // Step 3 - Build multi-dimensional index
                 BuildMultiDimensionalIndex();
                 
                 Console.WriteLine($"Successfully loaded and indexed {bookCount} books.");
@@ -92,7 +89,6 @@ namespace Week3ArraysSorting
         
         /// <summary>
         /// Start interactive lookup session
-        /// TODO: Implement the CLI loop
         /// </summary>
         public void StartLookupSession()
         {
@@ -100,7 +96,7 @@ namespace Week3ArraysSorting
             Console.WriteLine("=== BOOK CATALOG LOOKUP (Part B) ===");
             Console.WriteLine();
             
-            // TODO: Check if books are loaded
+            // Check if books are loaded
             if (bookCount == 0)
             {
                 Console.WriteLine("No books loaded! Please load a book file first.");
@@ -109,7 +105,6 @@ namespace Week3ArraysSorting
             
             DisplayLookupInstructions();
             
-            // TODO: Implement lookup loop
             bool keepLooking = true;
             
             while (keepLooking)
@@ -118,14 +113,14 @@ namespace Week3ArraysSorting
                 Console.Write("Enter a book title (or 'exit'): ");
                 string? query = Console.ReadLine();
                 
-                // TODO: Handle exit condition
+                // Handle exit condition
                 if (string.IsNullOrEmpty(query) || query.ToLowerInvariant() == "exit")
                 {
                     keepLooking = false;
                     continue;
                 }
                 
-                // TODO: Perform lookup
+                // Perform lookup
                 PerformLookup(query);
             }
             
@@ -226,81 +221,121 @@ namespace Week3ArraysSorting
         }
         
         /// <summary>
-        /// Sort books using recursive algorithm (QuickSort OR MergeSort)
-        /// TODO: Choose ONE recursive sorting algorithm to implement
+        /// Sort books using recursive QuickSort algorithm
+        /// Uses median-of-three pivot strategy for better performance
+        /// Time Complexity: O(n log n) average, O(n²) worst case
+        /// Space Complexity: O(log n) due to recursion stack
         /// </summary>
         private void SortBooksRecursively()
         {
-            Console.WriteLine("TODO: Implement recursive sorting algorithm");
-            Console.WriteLine("Choose ONE to implement:");
-            Console.WriteLine("1. QuickSort - Choose pivot strategy and document it");
-            Console.WriteLine("2. MergeSort - Implement recursive split/merge");
-            Console.WriteLine();
-            Console.WriteLine("Requirements:");
-            Console.WriteLine("- Must be YOUR recursive implementation");
-            Console.WriteLine("- Cannot use Array.Sort() or LINQ");
-            Console.WriteLine("- Sort both arrays in parallel (original and normalized)");
-            Console.WriteLine("- Document Big-O time/space complexity in README");
+            Console.WriteLine("Sorting books using recursive QuickSort with median-of-three pivot...");
             
-            // TODO: Call your chosen sorting algorithm
-            // Example: QuickSort(normalizedTitles, originalTitles, 0, bookCount - 1);
-            // Example: MergeSort(normalizedTitles, originalTitles, 0, bookCount - 1);
+            if (bookCount > 1)
+            {
+                QuickSort(normalizedTitles, originalTitles, 0, bookCount - 1);
+                Console.WriteLine("Books sorted successfully using QuickSort algorithm.");
+            }
+            else
+            {
+                Console.WriteLine("No sorting needed - 0 or 1 books loaded.");
+            }
         }
         
         /// <summary>
         /// Build multi-dimensional index over sorted data
-        /// TODO: Create 26x26 index for first two letters
+        /// Creates 26x26 index for fast O(1) lookup by first two letters
         /// </summary>
         private void BuildMultiDimensionalIndex()
         {
-            Console.WriteLine("TODO: Build multi-dimensional index");
-            Console.WriteLine("Requirements:");
-            Console.WriteLine("- Create int[,] startIndex and int[,] endIndex arrays (26x26)");
-            Console.WriteLine("- Map A-Z to indices 0-25");
-            Console.WriteLine("- Handle non-letter starts (map to index 0 or create 27th bucket)");
-            Console.WriteLine("- Scan sorted array once to record [start,end) ranges");
-            Console.WriteLine("- Empty ranges should have start > end or start = -1");
+            Console.WriteLine("Building multi-dimensional index for fast lookups...");
             
-            // TODO: Initialize index arrays
-            // TODO: Scan sorted titles and record boundaries for each letter pair
+            // Initialize all ranges as empty
+            for (int i = 0; i < 26; i++)
+            {
+                for (int j = 0; j < 26; j++)
+                {
+                    startIndex[i, j] = -1;
+                    endIndex[i, j] = -1;
+                }
+            }
             
-            // Example structure:
-            // // Scan sorted array and build ranges
-            // for (int bookIndex = 0; bookIndex < bookCount; bookIndex++)
-            // {
-            //     // Get first two letters and update index ranges
-            // }
+            // Scan sorted array and build ranges for each letter pair
+            for (int bookIndex = 0; bookIndex < bookCount; bookIndex++)
+            {
+                string title = normalizedTitles[bookIndex];
+                if (string.IsNullOrEmpty(title)) continue;
+                
+                // Get first two letters (or handle edge cases)
+                int firstLetter = GetLetterIndex(title[0]);
+                int secondLetter = title.Length > 1 ? GetLetterIndex(title[1]) : 0;
+                
+                // If this is the first book with this letter pair, set start
+                if (startIndex[firstLetter, secondLetter] == -1)
+                {
+                    startIndex[firstLetter, secondLetter] = bookIndex;
+                }
+                
+                // Always update end to current position + 1 (exclusive)
+                endIndex[firstLetter, secondLetter] = bookIndex + 1;
+            }
+            
+            Console.WriteLine("Multi-dimensional index built successfully.");
+            Console.WriteLine("Index covers A-Z x A-Z letter pairs for O(1) range lookup.");
         }
         
         /// <summary>
         /// Perform lookup with exact match and suggestions
-        /// TODO: Implement indexed lookup with binary search
+        /// Uses multi-dimensional index for O(1) range lookup and binary search
         /// </summary>
         /// <param name="query">User's search query</param>
         private void PerformLookup(string query)
         {
-            // TODO: Normalize query same way as indexing
             string normalizedQuery = NormalizeTitle(query);
             
-            Console.WriteLine($"TODO: Perform lookup for '{query}'");
-            Console.WriteLine("Requirements:");
-            Console.WriteLine("1. Get first 1-2 letters of normalized query");
-            Console.WriteLine("2. Look up [start,end) range from 2D index in O(1)");
-            Console.WriteLine("3. If empty range, show suggestions from nearby ranges");
-            Console.WriteLine("4. If non-empty range, binary search within slice");
-            Console.WriteLine("5. Show exact match or helpful suggestions");
-            Console.WriteLine("6. Always display original titles (not normalized)");
+            if (string.IsNullOrEmpty(normalizedQuery))
+            {
+                Console.WriteLine("Empty search query. Please enter a valid book title.");
+                return;
+            }
             
-            // TODO: Extract first two letters for indexing
-            // TODO: Get start/end range from 2D index
-            // TODO: If range is empty, find suggestions
-            // TODO: If range exists, binary search for exact match
-            // TODO: Display results using original titles
+            // Get first two letters for indexing
+            int firstLetter = GetLetterIndex(normalizedQuery[0]);
+            int secondLetter = normalizedQuery.Length > 1 ? GetLetterIndex(normalizedQuery[1]) : 0;
+            
+            // Get range from 2D index
+            int rangeStart = startIndex[firstLetter, secondLetter];
+            int rangeEnd = endIndex[firstLetter, secondLetter];
+            
+            Console.WriteLine();
+            Console.WriteLine($"Searching for: '{query}'");
+            
+            // Check if range exists
+            if (rangeStart == -1 || rangeStart >= rangeEnd)
+            {
+                Console.WriteLine("No exact match found.");
+                Console.WriteLine("Suggestions:");
+                ShowSuggestions(normalizedQuery, firstLetter, secondLetter);
+            }
+            else
+            {
+                // Binary search within the range
+                int foundIndex = BinarySearchInRange(normalizedQuery, rangeStart, rangeEnd);
+                
+                if (foundIndex != -1)
+                {
+                    Console.WriteLine($"✓ Found: {originalTitles[foundIndex]}");
+                }
+                else
+                {
+                    Console.WriteLine("No exact match found.");
+                    Console.WriteLine("Similar titles in this range:");
+                    ShowNearbyTitles(normalizedQuery, rangeStart, rangeEnd);
+                }
+            }
         }
         
         /// <summary>
         /// Display lookup instructions
-        /// TODO: Customize instructions for your implementation
         /// </summary>
         private void DisplayLookupInstructions()
         {
@@ -313,37 +348,263 @@ namespace Week3ArraysSorting
             Console.WriteLine($"Catalog contains {bookCount} books, sorted and indexed for fast lookup.");
         }
         
-        // TODO: Add your sorting algorithm methods
-        // Choose ONE to implement:
+        /// <summary>
+        /// QuickSort implementation with median-of-three pivot strategy
+        /// Recursively sorts both normalized and original arrays in parallel
+        /// </summary>
+        private void QuickSort(string[] normalizedArray, string[] originalArray, int low, int high)
+        {
+            if (low < high)
+            {
+                // Partition the array and get pivot position
+                int pivotIndex = Partition(normalizedArray, originalArray, low, high);
+                
+                // Recursively sort elements before and after partition
+                QuickSort(normalizedArray, originalArray, low, pivotIndex - 1);
+                QuickSort(normalizedArray, originalArray, pivotIndex + 1, high);
+            }
+        }
         
         /// <summary>
-        /// QuickSort implementation (Option 1)
-        /// TODO: Implement if you choose QuickSort
+        /// Partition method for QuickSort using median-of-three pivot selection
         /// </summary>
-        // private void QuickSort(string[] normalizedArray, string[] originalArray, int low, int high)
-        // {
-        //     // TODO: Implement recursive QuickSort
-        //     // TODO: Choose and document pivot strategy
-        //     // TODO: Ensure both arrays stay synchronized
-        // }
+        private int Partition(string[] normalizedArray, string[] originalArray, int low, int high)
+        {
+            // Median-of-three pivot selection for better performance
+            int mid = low + (high - low) / 2;
+            
+            // Find median of low, mid, high
+            if (string.Compare(normalizedArray[mid], normalizedArray[low], StringComparison.Ordinal) < 0)
+                Swap(normalizedArray, originalArray, low, mid);
+            if (string.Compare(normalizedArray[high], normalizedArray[low], StringComparison.Ordinal) < 0)
+                Swap(normalizedArray, originalArray, low, high);
+            if (string.Compare(normalizedArray[high], normalizedArray[mid], StringComparison.Ordinal) < 0)
+                Swap(normalizedArray, originalArray, mid, high);
+            
+            // Use median as pivot
+            string pivot = normalizedArray[mid];
+            Swap(normalizedArray, originalArray, mid, high); // Move pivot to end
+            
+            int i = low - 1;
+            
+            for (int j = low; j < high; j++)
+            {
+                if (string.Compare(normalizedArray[j], pivot, StringComparison.Ordinal) <= 0)
+                {
+                    i++;
+                    Swap(normalizedArray, originalArray, i, j);
+                }
+            }
+            
+            Swap(normalizedArray, originalArray, i + 1, high); // Move pivot to final position
+            return i + 1;
+        }
         
         /// <summary>
-        /// MergeSort implementation (Option 2)  
-        /// TODO: Implement if you choose MergeSort
+        /// Swap elements in both arrays to keep them synchronized
         /// </summary>
-        // private void MergeSort(string[] normalizedArray, string[] originalArray, int left, int right)
-        // {
-        //     // TODO: Implement recursive MergeSort
-        //     // TODO: Handle O(n) extra space requirement
-        //     // TODO: Ensure both arrays stay synchronized
-        // }
+        private void Swap(string[] normalizedArray, string[] originalArray, int i, int j)
+        {
+            // Swap normalized titles
+            string tempNormalized = normalizedArray[i];
+            normalizedArray[i] = normalizedArray[j];
+            normalizedArray[j] = tempNormalized;
+            
+            // Swap original titles
+            string tempOriginal = originalArray[i];
+            originalArray[i] = originalArray[j];
+            originalArray[j] = tempOriginal;
+        }
         
-        // TODO: Add helper methods as needed
-        // Examples:
-        // - GetLetterIndex(char letter) - Convert A-Z to 0-25
-        // - BinarySearchInRange(string query, int start, int end)
-        // - FindSuggestions(string query, int maxSuggestions)
-        // - SwapElements(int index1, int index2) - For QuickSort
-        // - MergeArrays(...) - For MergeSort
-    }
+        /// <summary>
+        /// Convert letter character to array index (A-Z -> 0-25)
+        /// Non-letters are mapped to index 0
+        /// </summary>
+        private int GetLetterIndex(char letter)
+        {
+            if (letter >= 'A' && letter <= 'Z')
+                return letter - 'A';
+            if (letter >= 'a' && letter <= 'z')
+                return letter - 'a';
+            return 0; // Non-letters map to A (index 0)
+        }
+        
+        /// <summary>
+        /// Binary search within a specific range of the sorted array
+        /// </summary>
+        private int BinarySearchInRange(string query, int start, int end)
+        {
+            int left = start;
+            int right = end - 1; // end is exclusive
+            
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+                int comparison = string.Compare(normalizedTitles[mid], query, StringComparison.Ordinal);
+                
+                if (comparison == 0)
+                    return mid;
+                else if (comparison < 0)
+                    left = mid + 1;
+                else
+                    right = mid - 1;
+            }
+            
+            return -1; // Not found
+        }
+        
+        /// <summary>
+        /// Show suggestions when no exact match is found
+        /// Shows exactly 3 nearest books by prefix similarity
+        /// </summary>
+        private void ShowSuggestions(string query, int firstLetter, int secondLetter)
+        {
+            // Find 3 nearest by prefix across entire catalog
+            List<string> suggestions = FindNearestByPrefix(query, 3);
+            
+            // Display exactly 3 suggestions
+            if (suggestions.Count == 0)
+            {
+                Console.WriteLine("  No similar titles found.");
+            }
+            else
+            {
+                foreach (string suggestion in suggestions.Take(3))
+                {
+                    Console.WriteLine($"  • {suggestion}");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Check if a title is similar to the query by prefix
+        /// </summary>
+        private bool IsPrefixSimilar(string title, string query)
+        {
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(query))
+                return false;
+            
+            // Check if title starts with query or query starts with title
+            if (title.StartsWith(query, StringComparison.Ordinal) || 
+                query.StartsWith(title, StringComparison.Ordinal))
+                return true;
+            
+            // Check if they share the first 2-3 characters
+            int minLength = Math.Min(title.Length, query.Length);
+            int commonChars = 0;
+            
+            for (int i = 0; i < Math.Min(minLength, 3); i++)
+            {
+                if (title[i] == query[i])
+                    commonChars++;
+            }
+            
+            return commonChars >= 2; // At least 2 common characters in first 3
+        }
+        
+        /// <summary>
+        /// Find nearest books by prefix similarity across entire catalog
+        /// </summary>
+        private List<string> FindNearestByPrefix(string query, int maxResults)
+        {
+            List<string> results = new List<string>();
+            List<(string title, int similarity)> candidates = new List<(string, int)>();
+            
+            // Calculate similarity score for each book
+            for (int i = 0; i < bookCount; i++)
+            {
+                int similarity = CalculatePrefixSimilarity(normalizedTitles[i], query);
+                if (similarity > 0)
+                {
+                    candidates.Add((originalTitles[i], similarity));
+                }
+            }
+            
+            // Sort by similarity (descending) and take top results
+            candidates.Sort((a, b) => b.similarity.CompareTo(a.similarity));
+            
+            foreach (var candidate in candidates.Take(maxResults))
+            {
+                results.Add(candidate.title);
+            }
+            
+            // If no similar books found, return first few books as fallback
+            if (results.Count == 0 && bookCount > 0)
+            {
+                for (int i = 0; i < Math.Min(maxResults, bookCount); i++)
+                {
+                    results.Add(originalTitles[i]);
+                }
+            }
+            
+            return results;
+        }
+        
+        /// <summary>
+        /// Calculate prefix similarity score between two strings
+        /// Higher score means more similar
+        /// </summary>
+        private int CalculatePrefixSimilarity(string title, string query)
+        {
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(query))
+                return 0;
+            
+            int score = 0;
+            int minLength = Math.Min(title.Length, query.Length);
+            
+            // Score based on common prefix length
+            for (int i = 0; i < minLength; i++)
+            {
+                if (title[i] == query[i])
+                {
+                    score += (minLength - i); // Earlier matches get higher score
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            // Bonus for exact prefix match
+            if (title.StartsWith(query, StringComparison.Ordinal) || 
+                query.StartsWith(title, StringComparison.Ordinal))
+            {
+                score += 10;
+            }
+            
+            return score;
+        }
+        
+        /// <summary>
+        /// Show nearby titles when exact match is not found in range
+        /// </summary>
+        private void ShowNearbyTitles(string query, int start, int end)
+        {
+            List<string> nearby = new List<string>();
+            
+            // Find closest titles lexicographically
+            for (int i = start; i < end && nearby.Count < 3; i++)
+            {
+                if (string.Compare(normalizedTitles[i], query, StringComparison.Ordinal) > 0)
+                {
+                    nearby.Add(originalTitles[i]);
+                }
+            }
+            
+            // If no titles after query, show some from the range
+            if (nearby.Count == 0)
+            {
+                for (int i = start; i < Math.Min(end, start + 3); i++)
+                {
+                    nearby.Add(originalTitles[i]);
+                }
+            }
+            
+            foreach (string title in nearby)
+            {
+                Console.WriteLine($"  • {title}");
+            }
+        }
+        
+        }
 }

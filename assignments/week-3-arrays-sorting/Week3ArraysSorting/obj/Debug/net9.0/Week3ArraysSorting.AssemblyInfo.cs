@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Week3ArraysSorting")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b40f04da334991316edd5b025b502c394ac2351")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+654bc2f935bf5157a26ac1a0f64fc0d752351c88")]
 [assembly: System.Reflection.AssemblyProductAttribute("Week3ArraysSorting")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Week3ArraysSorting")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
