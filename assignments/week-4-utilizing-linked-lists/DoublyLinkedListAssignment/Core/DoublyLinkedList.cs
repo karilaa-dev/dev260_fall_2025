@@ -234,14 +234,24 @@ namespace Week4DoublyLinkedLists.Core
         /// </summary>
         public void DisplayForward()
         {
-            // TODO: Step 4a - Implement forward traversal and display
-            // 1. Start from head node
-            // 2. Traverse using Next pointers until null
-            // 3. Print each node's data with proper formatting
-            // 4. Show empty list message if list is empty
-            // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/#forward-traversal
+            if (IsEmpty)
+            {
+                Console.WriteLine("List is empty");
+                return;
+            }
             
-            throw new NotImplementedException("TODO: Step 4a - Implement DisplayForward method");
+            Console.Write("Forward: ");
+            Node<T> current = head;
+            while (current != null)
+            {
+                Console.Write(current.Data);
+                if (current.Next != null)
+                {
+                    Console.Write(" <-> ");
+                }
+                current = current.Next;
+            }
+            Console.WriteLine();
         }
         
         /// <summary>
@@ -250,15 +260,24 @@ namespace Week4DoublyLinkedLists.Core
         /// </summary>
         public void DisplayBackward()
         {
-            // TODO: Step 4b - Implement backward traversal and display
-            // 1. Start from tail node
-            // 2. Traverse using Previous pointers until null
-            // 3. Print each node's data with proper formatting
-            // 4. Show empty list message if list is empty
-            // This demonstrates the power of doubly linked lists!
-            // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/#backward-traversal
+            if (IsEmpty)
+            {
+                Console.WriteLine("List is empty");
+                return;
+            }
             
-            throw new NotImplementedException("TODO: Step 4b - Implement DisplayBackward method");
+            Console.Write("Backward: ");
+            Node<T> current = tail;
+            while (current != null)
+            {
+                Console.Write(current.Data);
+                if (current.Previous != null)
+                {
+                    Console.Write(" <-> ");
+                }
+                current = current.Previous;
+            }
+            Console.WriteLine();
         }
         
         /// <summary>
@@ -269,13 +288,18 @@ namespace Week4DoublyLinkedLists.Core
         /// <returns>Array containing all list elements</returns>
         public T[] ToArray()
         {
-            // TODO: Step 4c - Implement array conversion
-            // 1. Create array of size count
-            // 2. Traverse the list and copy elements to array
-            // 3. Return the populated array
-            // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/
+            T[] array = new T[count];
+            Node<T> current = head;
+            int index = 0;
             
-            throw new NotImplementedException("TODO: Step 4c - Implement ToArray method");
+            while (current != null)
+            {
+                array[index] = current.Data;
+                current = current.Next;
+                index++;
+            }
+            
+            return array;
         }
         
         #endregion
