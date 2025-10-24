@@ -502,13 +502,9 @@ namespace Week4DoublyLinkedLists.Core
         /// </summary>
         public void Clear()
         {
-            // TODO: Step 7a - Implement clear
-            // 1. Set head and tail to null
-            // 2. Set count to 0
-            // Note: In C#, garbage collection will handle memory cleanup
-            // 📖 See: https://docs.microsoft.com/en-us/dotnet/standard/collections/
-            
-            throw new NotImplementedException("TODO: Step 7a - Implement Clear method");
+            head = null;
+            tail = null;
+            count = 0;
         }
         
         /// <summary>
@@ -518,14 +514,25 @@ namespace Week4DoublyLinkedLists.Core
         /// </summary>
         public void Reverse()
         {
-            // TODO: Step 7b - Implement reverse
-            // 1. Check if list is empty or has only one element
-            // 2. Traverse the list and swap Next and Previous pointers for each node
-            // 3. Swap head and tail pointers
-            // This is the power of doubly linked lists - easy reversal!
-            // 📖 See: https://www.geeksforgeeks.org/dsa/reverse-a-doubly-linked-list/
+            if (IsEmpty || count == 1)
+            {
+                return;
+            }
             
-            throw new NotImplementedException("TODO: Step 7b - Implement Reverse method");
+            Node<T> current = head;
+            Node<T> temp;
+            
+            while (current != null)
+            {
+                temp = current.Next;
+                current.Next = current.Previous;
+                current.Previous = temp;
+                current = temp;
+            }
+            
+            temp = head;
+            head = tail;
+            tail = temp;
         }
         
         #endregion
