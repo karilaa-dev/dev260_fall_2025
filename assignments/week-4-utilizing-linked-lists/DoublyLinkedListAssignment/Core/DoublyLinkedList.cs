@@ -140,17 +140,21 @@ namespace Week4DoublyLinkedLists.Core
         /// <param name="item">Item to add</param>
         public void AddFirst(T item)
         {
-            // TODO: Step 3a - Implement adding to the beginning of the list
-            // 1. Create a new node with the item
-            // 2. If list is empty: set both head and tail to new node
-            // 3. If list is not empty:
-            //    - Set new node's Next to current head
-            //    - Set current head's Previous to new node
-            //    - Update head to new node
-            // 4. Increment count
-            // 📖 See: https://www.geeksforgeeks.org/dsa/introduction-and-insertion-in-a-doubly-linked-list/#insertion-at-the-beginning-in-doubly-linked-list
+            Node<T> newNode = new Node<T>(item);
             
-            throw new NotImplementedException("TODO: Step 3a - Implement AddFirst method");
+            if (IsEmpty)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                newNode.Next = head;
+                head.Previous = newNode;
+                head = newNode;
+            }
+            
+            count++;
         }
         
         /// <summary>
@@ -161,17 +165,21 @@ namespace Week4DoublyLinkedLists.Core
         /// <param name="item">Item to add</param>
         public void AddLast(T item)
         {
-            // TODO: Step 3b - Implement adding to the end of the list
-            // 1. Create a new node with the item
-            // 2. If list is empty: set both head and tail to new node
-            // 3. If list is not empty:
-            //    - Set current tail's Next to new node
-            //    - Set new node's Previous to current tail
-            //    - Update tail to new node
-            // 4. Increment count
-            // 📖 See: https://www.geeksforgeeks.org/dsa/introduction-and-insertion-in-a-doubly-linked-list/#insertion-at-the-end-in-doubly-linked-list
+            Node<T> newNode = new Node<T>(item);
             
-            throw new NotImplementedException("TODO: Step 3b - Implement AddLast method");
+            if (IsEmpty)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                tail.Next = newNode;
+                newNode.Previous = tail;
+                tail = newNode;
+            }
+            
+            count++;
         }
         
         /// <summary>
@@ -189,19 +197,31 @@ namespace Week4DoublyLinkedLists.Core
         /// <param name="item">Item to insert</param>
         public void Insert(int index, T item)
         {
-            // TODO: Step 3c - Implement inserting at a specific position
-            // 1. Validate index range (0 to count inclusive)
-            // 2. Handle special cases:
-            //    - If index == 0: call AddFirst
-            //    - If index == count: call AddLast
-            // 3. For middle insertion:
-            //    - Traverse to the position (use GetNodeAt helper)
-            //    - Create new node
-            //    - Update pointers: new node's Next/Previous and surrounding nodes
-            // 4. Increment count
-            // 📖 See: https://www.geeksforgeeks.org/dsa/introduction-and-insertion-in-a-doubly-linked-list/#insertion-after-a-given-node-in-doubly-linked-list
+            if (index < 0 || index > count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and count inclusive.");
+            }
             
-            throw new NotImplementedException("TODO: Step 3c - Implement Insert method");
+            if (index == 0)
+            {
+                AddFirst(item);
+            }
+            else if (index == count)
+            {
+                AddLast(item);
+            }
+            else
+            {
+                Node<T> currentNode = GetNodeAt(index);
+                Node<T> newNode = new Node<T>(item);
+                
+                newNode.Previous = currentNode.Previous;
+                newNode.Next = currentNode;
+                currentNode.Previous.Next = newNode;
+                currentNode.Previous = newNode;
+                
+                count++;
+            }
         }
         
         #endregion
@@ -457,17 +477,31 @@ namespace Week4DoublyLinkedLists.Core
         /// <returns>Node at the specified index</returns>
         private Node<T> GetNodeAt(int index)
         {
-            // TODO: Helper Method - Implement optimized node retrieval
-            // 1. Validate index range (0 to count-1)
-            // 2. Optimize traversal direction:
-            //    - If index < count/2: start from head and go forward
-            //    - If index >= count/2: start from tail and go backward
-            // 3. Traverse to the specified index
-            // 4. Return the node at that position
-            // Hint: This optimization makes operations on large lists more efficient
-            // 📖 See: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/
+            if (index < 0 || index >= count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and count-1 inclusive.");
+            }
             
-            throw new NotImplementedException("TODO: Helper - Implement GetNodeAt helper method");
+            Node<T> current;
+            
+            if (index < count / 2)
+            {
+                current = head;
+                for (int i = 0; i < index; i++)
+                {
+                    current = current.Next;
+                }
+            }
+            else
+            {
+                current = tail;
+                for (int i = count - 1; i > index; i--)
+                {
+                    current = current.Previous;
+                }
+            }
+            
+            return current;
         }
         
         /// <summary>
