@@ -315,13 +315,18 @@ namespace Week4DoublyLinkedLists.Core
         /// <returns>True if item is in the list</returns>
         public bool Contains(T item)
         {
-            // TODO: Step 5a - Implement contains check
-            // 1. Traverse the list from head to tail
-            // 2. Compare each node's data with the item
-            // 3. Return true if found, false if not found
-            // 📖 See: https://www.geeksforgeeks.org/dsa/search-an-element-in-a-doubly-linked-list/
+            Node<T> current = head;
             
-            throw new NotImplementedException("TODO: Step 5a - Implement Contains method");
+            while (current != null)
+            {
+                if (EqualityComparer<T>.Default.Equals(current.Data, item))
+                {
+                    return true;
+                }
+                current = current.Next;
+            }
+            
+            return false;
         }
         
         /// <summary>
@@ -333,13 +338,18 @@ namespace Week4DoublyLinkedLists.Core
         /// <returns>Node containing the item, or null if not found</returns>
         public Node<T>? Find(T item)
         {
-            // TODO: Step 5b - Implement find method
-            // 1. Traverse the list from head to tail
-            // 2. Compare each node's data with the item
-            // 3. Return the node if found, null if not found
-            // 📖 See: https://www.geeksforgeeks.org/dsa/search-an-element-in-a-doubly-linked-list/
+            Node<T> current = head;
             
-            throw new NotImplementedException("TODO: Step 5b - Implement Find method");
+            while (current != null)
+            {
+                if (EqualityComparer<T>.Default.Equals(current.Data, item))
+                {
+                    return current;
+                }
+                current = current.Next;
+            }
+            
+            return null;
         }
         
         /// <summary>
@@ -351,14 +361,20 @@ namespace Week4DoublyLinkedLists.Core
         /// <returns>Index of the item, or -1 if not found</returns>
         public int IndexOf(T item)
         {
-            // TODO: Step 5c - Implement IndexOf method
-            // 1. Traverse the list from head to tail
-            // 2. Keep track of current index
-            // 3. Compare each node's data with the item
-            // 4. Return index if found, -1 if not found
-            // 📖 See: https://www.geeksforgeeks.org/dsa/search-an-element-in-a-doubly-linked-list/
+            Node<T> current = head;
+            int index = 0;
             
-            throw new NotImplementedException("TODO: Step 5c - Implement IndexOf method");
+            while (current != null)
+            {
+                if (EqualityComparer<T>.Default.Equals(current.Data, item))
+                {
+                    return index;
+                }
+                current = current.Next;
+                index++;
+            }
+            
+            return -1;
         }
         
         #endregion
