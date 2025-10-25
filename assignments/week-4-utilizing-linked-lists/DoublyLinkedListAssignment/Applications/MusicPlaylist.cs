@@ -86,13 +86,17 @@ namespace Week4DoublyLinkedLists.Applications
         /// <param name="song">Song to add</param>
         public void AddSong(Song song)
         {
-            // TODO: Step 10a - Implement adding song to end of playlist
-            // 1. Validate that song is not null
-            // 2. Use your DoublyLinkedList's AddLast method
-            // 3. If this is the first song, set it as current song
-            // 📖 Assignment Reference: Step 10a in Part B
+            if (song == null)
+            {
+                throw new ArgumentNullException(nameof(song));
+            }
             
-            throw new NotImplementedException("TODO: Step 10a - Implement AddSong method");
+            playlist.AddLast(song);
+            
+            if (currentSong == null)
+            {
+                currentSong = playlist.First;
+            }
         }
         
         /// <summary>
@@ -104,14 +108,22 @@ namespace Week4DoublyLinkedLists.Applications
         /// <param name="song">Song to add</param>
         public void AddSongAt(int position, Song song)
         {
-            // TODO: Step 10a - Implement adding song at specific position
-            // 1. Validate position is within valid range (0 to TotalSongs)
-            // 2. Validate that song is not null
-            // 3. Use your DoublyLinkedList's Insert method
-            // 4. If this is the first song, set it as current song
-            // 📖 Assignment Reference: Step 10a in Part B
+            if (position < 0 || position > TotalSongs)
+            {
+                throw new ArgumentOutOfRangeException(nameof(position), "Position must be between 0 and TotalSongs inclusive.");
+            }
             
-            throw new NotImplementedException("TODO: Step 10a - Implement AddSongAt method");
+            if (song == null)
+            {
+                throw new ArgumentNullException(nameof(song));
+            }
+            
+            playlist.Insert(position, song);
+            
+            if (currentSong == null)
+            {
+                currentSong = playlist.First;
+            }
         }
         
         #endregion
@@ -125,17 +137,27 @@ namespace Week4DoublyLinkedLists.Applications
         /// </summary>
         /// <param name="song">Song to remove</param>
         /// <returns>True if song was found and removed</returns>
-        public bool RemoveSong(Song song)
+public bool RemoveSong(Song song)
         {
-            // TODO: Step 10b - Implement removing specific song
-            // 1. Validate that song is not null
-            // 2. Find the song in the playlist using your DoublyLinkedList's Find method
-            // 3. If the song being removed is the current song, handle current song update
-            // 4. Use your DoublyLinkedList's Remove method
-            // 5. Return true if removed, false if not found
-            // 📖 Assignment Reference: Step 10b in Part B
+            if (song == null)
+            {
+                throw new ArgumentNullException(nameof(song));
+            }
             
-            throw new NotImplementedException("TODO: Step 10b - Implement RemoveSong method");
+            Node<Song> nodeToRemove = playlist.Find(song);
+            
+            if (nodeToRemove == null)
+            {
+                return false;
+            }
+            
+            if (nodeToRemove == currentSong)
+            {
+                currentSong = currentSong.Next ?? currentSong.Previous;
+            }
+            
+            playlist.Remove(song);
+            return true;
         }
         
         /// <summary>
@@ -147,15 +169,20 @@ namespace Week4DoublyLinkedLists.Applications
         /// <returns>True if song was removed successfully</returns>
         public bool RemoveSongAt(int position)
         {
-            // TODO: Step 10b - Implement removing song at position
-            // 1. Validate position is within valid range (0 to TotalSongs-1)
-            // 2. Get the node at that position to check if it's the current song
-            // 3. If removing current song, update current song reference
-            // 4. Use your DoublyLinkedList's RemoveAt method
-            // 5. Return true if removed successfully
-            // 📖 Assignment Reference: Step 10b in Part B
+            if (position < 0 || position >= TotalSongs)
+            {
+                throw new ArgumentOutOfRangeException(nameof(position), "Position must be between 0 and TotalSongs-1 inclusive.");
+            }
             
-            throw new NotImplementedException("TODO: Step 10b - Implement RemoveSongAt method");
+            Node<Song> nodeAtPosition = GetNodeAt(position);
+            
+            if (nodeAtPosition == currentSong)
+            {
+                currentSong = currentSong.Next ?? currentSong.Previous;
+            }
+            
+            playlist.RemoveAt(position);
+            return true;
         }
         
         #endregion
@@ -170,14 +197,13 @@ namespace Week4DoublyLinkedLists.Applications
         /// <returns>True if moved to next song, false if at end</returns>
         public bool Next()
         {
-            // TODO: Step 10c - Implement moving to next song
-            // 1. Check if there is a current song and if it has a Next node
-            // 2. Update currentSong to the next node
-            // 3. Return true if successful, false if at end of playlist
-            // 📖 Assignment Reference: Step 10c in Part B
-            // 💡 This demonstrates the power of doubly linked lists for navigation!
+            if (currentSong == null || currentSong.Next == null)
+            {
+                return false;
+            }
             
-            throw new NotImplementedException("TODO: Step 10c - Implement Next method");
+            currentSong = currentSong.Next;
+            return true;
         }
         
         /// <summary>
@@ -188,14 +214,13 @@ namespace Week4DoublyLinkedLists.Applications
         /// <returns>True if moved to previous song, false if at beginning</returns>
         public bool Previous()
         {
-            // TODO: Step 10c - Implement moving to previous song
-            // 1. Check if there is a current song and if it has a Previous node
-            // 2. Update currentSong to the previous node
-            // 3. Return true if successful, false if at beginning of playlist
-            // 📖 Assignment Reference: Step 10c in Part B
-            // 💡 This demonstrates bidirectional navigation unique to doubly linked lists!
+            if (currentSong == null || currentSong.Previous == null)
+            {
+                return false;
+            }
             
-            throw new NotImplementedException("TODO: Step 10c - Implement Previous method");
+            currentSong = currentSong.Previous;
+            return true;
         }
         
         /// <summary>
@@ -205,17 +230,15 @@ namespace Week4DoublyLinkedLists.Applications
         /// </summary>
         /// <param name="position">Position to jump to (0-based)</param>
         /// <returns>True if jump was successful</returns>
-        public bool JumpToSong(int position)
+public bool JumpToSong(int position)
         {
-            // TODO: Step 10c - Implement jumping to specific position
-            // 1. Validate position is within valid range (0 to TotalSongs-1)
-            // 2. Traverse to the node at the specified position
-            // 3. Update currentSong to that node
-            // 4. Return true if successful, false for invalid position
-            // 📖 Assignment Reference: Step 10c in Part B
-            // 💡 Hint: You can traverse from head or use helper methods
+            if (position < 0 || position >= TotalSongs)
+            {
+                return false;
+            }
             
-            throw new NotImplementedException("TODO: Step 10c - Implement JumpToSong method");
+            currentSong = GetNodeAt(position);
+            return true;
         }
         
         #endregion
@@ -278,6 +301,27 @@ namespace Week4DoublyLinkedLists.Applications
         #endregion
         
         #region Helper Methods for Students
+        
+        /// <summary>
+        /// Get node at specific position (helper for internal use)
+        /// </summary>
+        /// <param name="position">Position to get node at (0-based)</param>
+        /// <returns>Node at the specified position</returns>
+        private Node<Song> GetNodeAt(int position)
+        {
+            if (position < 0 || position >= TotalSongs)
+            {
+                throw new ArgumentOutOfRangeException(nameof(position), "Position must be between 0 and TotalSongs-1 inclusive.");
+            }
+            
+            Node<Song> current = playlist.First;
+            for (int i = 0; i < position; i++)
+            {
+                current = current.Next;
+            }
+            
+            return current;
+        }
         
         /// <summary>
         /// Get the position of the current song (1-based for display)
