@@ -253,16 +253,25 @@ public bool JumpToSong(int position)
         /// </summary>
         public void DisplayPlaylist()
         {
-            // TODO: Step 11 - Implement playlist display
-            // 1. Show playlist name and total song count
-            // 2. If playlist is empty, show appropriate message
-            // 3. Iterate through all songs using foreach (your DoublyLinkedList supports this)
-            // 4. Mark the current song with an indicator (e.g., "► ")
-            // 5. Show position numbers (1-based for user display)
-            // 📖 Assignment Reference: Step 11 in Part B
-            // 💡 Format: "  1. Song Title by Artist (3:45)" or "► 2. Current Song by Artist (4:12)"
+            Console.WriteLine($"\n=== {Name} ===");
+            Console.WriteLine($"Total Songs: {TotalSongs}");
+            Console.WriteLine($"Total Duration: {GetTotalDuration():hh\\:mm\\:ss}");
+            Console.WriteLine();
             
-            throw new NotImplementedException("TODO: Step 11 - Implement DisplayPlaylist method");
+            if (TotalSongs == 0)
+            {
+                Console.WriteLine("Playlist is empty.");
+                return;
+            }
+            
+            int position = 1;
+            foreach (var song in playlist)
+            {
+                string marker = (currentSong?.Data == song) ? "► " : "  ";
+                Console.WriteLine($"{marker}{position}. {song}");
+                position++;
+            }
+            Console.WriteLine();
         }
         
         /// <summary>
@@ -271,15 +280,22 @@ public bool JumpToSong(int position)
         /// </summary>
         public void DisplayCurrentSong()
         {
-            // TODO: Step 11 - Implement current song display
-            // 1. Check if there is a current song selected
-            // 2. If no current song, show appropriate message
-            // 3. If current song exists, show detailed information:
-            //    - Title, Artist, Album, Year, Duration, Genre
-            //    - Current position in playlist (e.g., "Song 3 of 10")
-            // 📖 Assignment Reference: Step 11 in Part B
+            if (currentSong == null)
+            {
+                Console.WriteLine("No song is currently selected.");
+                return;
+            }
             
-            throw new NotImplementedException("TODO: Step 11 - Implement DisplayCurrentSong method");
+            int currentPosition = GetCurrentPosition();
+            Console.WriteLine($"\n=== NOW PLAYING ===");
+            Console.WriteLine($"Song {currentPosition} of {TotalSongs}");
+            Console.WriteLine($"Title: {currentSong.Data.Title}");
+            Console.WriteLine($"Artist: {currentSong.Data.Artist}");
+            Console.WriteLine($"Album: {currentSong.Data.Album}");
+            Console.WriteLine($"Year: {currentSong.Data.Year}");
+            Console.WriteLine($"Genre: {currentSong.Data.Genre}");
+            Console.WriteLine($"Duration: {currentSong.Data.Duration:mm\\:ss}");
+            Console.WriteLine("==================");
         }
         
         /// <summary>
@@ -287,15 +303,9 @@ public bool JumpToSong(int position)
         /// 📚 Reference: https://www.geeksforgeeks.org/dsa/traversal-in-doubly-linked-list/
         /// </summary>
         /// <returns>Currently selected song, or null if no song selected</returns>
-        public Song? GetCurrentSong()
+public Song? GetCurrentSong()
         {
-            // TODO: Step 11 - Implement getting current song
-            // 1. Return the Data from the currentSong node
-            // 2. Return null if no current song is selected
-            // 📖 Assignment Reference: Step 11 in Part B
-            // 💡 This is a simple getter, but important for the playlist interface
-            
-            throw new NotImplementedException("TODO: Step 11 - Implement GetCurrentSong method");
+            return currentSong?.Data;
         }
         
         #endregion
