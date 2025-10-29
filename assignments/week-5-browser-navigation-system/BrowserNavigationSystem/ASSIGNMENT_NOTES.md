@@ -1,6 +1,6 @@
 # Assignment 5: Browser Navigation System - Implementation Notes
 
-**Name:** [Your Name]
+**Name:** Kyryl Andreiev
 
 ## Dual-Stack Pattern Understanding
 
@@ -44,9 +44,9 @@
 
 **Breakdown:**
 
-- Understanding the assignment: [X hours]
-- Implementing the 6 methods: [X hours]
-- Testing and debugging: [X hours]
-- Writing these notes: [X hours]
+- Understanding the assignment: 30 minutes
+- Implementing the 6 methods: 30 minutes
+- Testing and debugging: 15 minutes
+- Writing these notes: xxxxxx
 
 **Most time-consuming part:** [Which aspect took the longest and why]
