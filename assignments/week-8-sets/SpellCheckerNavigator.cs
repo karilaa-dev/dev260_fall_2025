@@ -244,7 +244,7 @@ namespace Assignment8
         /// </summary>
         private void HandleLoadDictionaryCommand()
         {
-            Console.WriteLine("\n=== Testing TODO #1: LoadDictionary() ===");
+            Console.WriteLine("\n=== Testing LoadDictionary() ===");
             Console.WriteLine("Attempting to load dictionary from 'dictionary.txt'...");
             
             try
@@ -268,7 +268,7 @@ namespace Assignment8
             catch (NotImplementedException)
             {
                 // INSTRUCTOR NOTE: Friendly reminder for unimplemented TODO methods
-                Console.WriteLine("⚠️  TODO #1 not yet implemented!");
+                Console.WriteLine("⚠️  LoadDictionary() not yet implemented!");
                 Console.WriteLine("   Complete the LoadDictionary() method in SpellChecker.cs");
             }
             catch (Exception ex)
@@ -294,7 +294,7 @@ namespace Assignment8
         /// </summary>
         private void HandleAnalyzeCommand(string[] args)
         {
-            Console.WriteLine("\n=== Testing TODO #2: AnalyzeTextFile() ===");
+            Console.WriteLine("\n=== Testing AnalyzeTextFile() ===");
             
             // INSTRUCTOR NOTE: Parameter validation with helpful usage examples
             if (args.Length == 0)
@@ -326,7 +326,7 @@ namespace Assignment8
                     
                     // INSTRUCTOR NOTE: Guide toward the next logical steps
                     Console.WriteLine("\n💡 Next steps:");
-                    Console.WriteLine("  - Type '3' to categorize words (TODO #3)");
+                    Console.WriteLine("  - Type '3' to categorize words");
                     Console.WriteLine("  - Type 'stats' for detailed information");
                 }
                 else
@@ -340,7 +340,7 @@ namespace Assignment8
             catch (NotImplementedException)
             {
                 // INSTRUCTOR NOTE: Clear guidance for incomplete implementations
-                Console.WriteLine("⚠️  TODO #2 not yet implemented!");
+                Console.WriteLine("⚠️  AnalyzeTextFile() not yet implemented!");
                 Console.WriteLine("   Complete the AnalyzeTextFile() method in SpellChecker.cs");
             }
             catch (Exception ex)
@@ -366,7 +366,7 @@ namespace Assignment8
         /// </summary>
         private void HandleCategorizeCommand()
         {
-            Console.WriteLine("\n=== Testing TODO #3: CategorizeWords() ===");
+            Console.WriteLine("\n=== Testing CategorizeWords() ===");
             
             // INSTRUCTOR NOTE: Check prerequisites in logical order
             // This teaches about dependency relationships in data processing
@@ -408,13 +408,13 @@ namespace Assignment8
                 
                 // INSTRUCTOR NOTE: Guide toward the next logical steps
                 Console.WriteLine("\n💡 Next steps:");
-                Console.WriteLine("  - Type '5' to see misspelled words (TODO #5)");
-                Console.WriteLine("  - Type '6' to see unique words sample (TODO #6)");
+                Console.WriteLine("  - Type '5' to see misspelled words");
+                Console.WriteLine("  - Type '6' to see unique words sample");
                 Console.WriteLine("  - Type 'stats' for comprehensive analysis");
             }
             catch (NotImplementedException)
             {
-                Console.WriteLine("⚠️  TODO #3 not yet implemented!");
+                Console.WriteLine("⚠️  CategorizeWords() not yet implemented!");
                 Console.WriteLine("   Complete the CategorizeWords() method in SpellChecker.cs");
             }
             catch (Exception ex)
@@ -439,7 +439,7 @@ namespace Assignment8
         /// </summary>
         private void HandleCheckCommand(string[] args)
         {
-            Console.WriteLine("\n=== Testing TODO #4: CheckWord() ===");
+            Console.WriteLine("\n=== Testing CheckWord() ===");
             
             // INSTRUCTOR NOTE: Parameter validation with clear examples
             if (args.Length == 0)
@@ -482,7 +482,7 @@ namespace Assignment8
             }
             catch (NotImplementedException)
             {
-                Console.WriteLine("⚠️  TODO #4 not yet implemented!");
+                Console.WriteLine("⚠️  CheckWord() not yet implemented!");
                 Console.WriteLine("   Complete the CheckWord() method in SpellChecker.cs");
             }
             catch (Exception ex)
@@ -508,7 +508,7 @@ namespace Assignment8
         /// </summary>
         private void HandleListMisspelledCommand()
         {
-            Console.WriteLine("\n=== Testing TODO #5: GetMisspelledWords() ===");
+            Console.WriteLine("\n=== Testing GetMisspelledWords() ===");
             
             // INSTRUCTOR NOTE: Ensure prerequisite analysis has been completed
             if (!spellChecker.HasAnalyzedText)
@@ -559,7 +559,7 @@ namespace Assignment8
             }
             catch (NotImplementedException)
             {
-                Console.WriteLine("⚠️  TODO #5 not yet implemented!");
+                Console.WriteLine("⚠️  GetMisspelledWords() not yet implemented!");
                 Console.WriteLine("   Complete the GetMisspelledWords() method in SpellChecker.cs");
             }
             catch (Exception ex)
@@ -584,7 +584,7 @@ namespace Assignment8
         /// </summary>
         private void HandleListUniqueCommand()
         {
-            Console.WriteLine("\n=== Testing TODO #6: GetUniqueWordsSample() ===");
+            Console.WriteLine("\n=== Testing GetUniqueWordsSample() ===");
             
             // INSTRUCTOR NOTE: Prerequisite validation for proper workflow
             if (!spellChecker.HasAnalyzedText)
@@ -629,7 +629,7 @@ namespace Assignment8
             }
             catch (NotImplementedException)
             {
-                Console.WriteLine("⚠️  TODO #6 not yet implemented!");
+                Console.WriteLine("⚠️  GetUniqueWordsSample() not yet implemented!");
                 Console.WriteLine("   Complete the GetUniqueWordsSample() method in SpellChecker.cs");
             }
             catch (Exception ex)
