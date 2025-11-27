@@ -96,12 +96,7 @@ namespace Lab9_BST
         public void Insert(Employee employee)
         {
             totalOperations++;
-            
-            // TODO: Implement this method
-            // Hint: Use InsertRecursive helper method
-            // root = InsertRecursive(root, employee);
-            
-            throw new NotImplementedException("Insert method needs implementation");
+            root = InsertRecursive(root, employee);
         }
         
         /// <summary>
@@ -120,12 +115,7 @@ namespace Lab9_BST
         public Employee? Search(int employeeId)
         {
             totalOperations++;
-            
-            // TODO: Implement this method
-            // Hint: Use SearchRecursive helper method
-            // return SearchRecursive(root, employeeId);
-            
-            throw new NotImplementedException("Search method needs implementation");
+            return SearchRecursive(root, employeeId);
         }
         
         /// <summary>
@@ -152,11 +142,7 @@ namespace Lab9_BST
                 return;
             }
             
-            // TODO: Implement this method
-            // Hint: Use InOrderRecursive helper method
-            // InOrderRecursive(root);
-            
-            throw new NotImplementedException("InOrderTraversal method needs implementation");
+            InOrderRecursive(root);
         }
         
         /// <summary>
@@ -176,10 +162,15 @@ namespace Lab9_BST
         {
             totalOperations++;
             
-            // TODO: Implement this method
-            // Hint: Keep going left until you can't go anymore
+            if (root == null) return null;
+
+            TreeNode current = root;
+            while (current.Left != null)
+            {
+                current = current.Left;
+            }
             
-            throw new NotImplementedException("FindMinimum method needs implementation");
+            return current.Employee;
         }
         
         /// <summary>
@@ -199,10 +190,15 @@ namespace Lab9_BST
         {
             totalOperations++;
             
-            // TODO: Implement this method
-            // Hint: Keep going right until you can't go anymore
+            if (root == null) return null;
+
+            TreeNode current = root;
+            while (current.Right != null)
+            {
+                current = current.Right;
+            }
             
-            throw new NotImplementedException("FindMaximum method needs implementation");
+            return current.Employee;
         }
         
         /// <summary>
@@ -221,12 +217,7 @@ namespace Lab9_BST
         public int Count()
         {
             totalOperations++;
-            
-            // TODO: Implement this method
-            // Hint: Use CountRecursive helper method
-            // return CountRecursive(root);
-            
-            throw new NotImplementedException("Count method needs implementation");
+            return CountRecursive(root);
         }
         
         // ============================================
@@ -235,35 +226,65 @@ namespace Lab9_BST
         
         private TreeNode? InsertRecursive(TreeNode? node, Employee employee)
         {
-            // TODO: Implement recursive insertion logic
-            // Base case: if node is null, create new node
-            // Recursive case: compare IDs and go left or right
-            throw new NotImplementedException("InsertRecursive helper method needs implementation");
+            if (node == null)
+            {
+                return new TreeNode(employee);
+            }
+
+            if (employee.EmployeeId < node.Employee.EmployeeId)
+            {
+                node.Left = InsertRecursive(node.Left, employee);
+            }
+            else if (employee.EmployeeId > node.Employee.EmployeeId)
+            {
+                node.Right = InsertRecursive(node.Right, employee);
+            }
+            
+            return node;
         }
         
         private Employee? SearchRecursive(TreeNode? node, int employeeId)
         {
-            // TODO: Implement recursive search logic
-            // Base case: if node is null, return null (not found)
-            // Base case: if node matches, return employee
-            // Recursive case: compare IDs and go left or right
-            throw new NotImplementedException("SearchRecursive helper method needs implementation");
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (node.Employee.EmployeeId == employeeId)
+            {
+                return node.Employee;
+            }
+
+            if (employeeId < node.Employee.EmployeeId)
+            {
+                return SearchRecursive(node.Left, employeeId);
+            }
+            else
+            {
+                return SearchRecursive(node.Right, employeeId);
+            }
         }
         
         private void InOrderRecursive(TreeNode? node)
         {
-            // TODO: Implement recursive in-order traversal
-            // Base case: if node is null, return
-            // Recursive case: Left -> Process -> Right
-            throw new NotImplementedException("InOrderRecursive helper method needs implementation");
+            if (node == null)
+            {
+                return;
+            }
+
+            InOrderRecursive(node.Left);
+            Console.WriteLine(node.Employee);
+            InOrderRecursive(node.Right);
         }
         
         private int CountRecursive(TreeNode? node)
         {
-            // TODO: Implement recursive counting
-            // Base case: if node is null, return 0
-            // Recursive case: 1 + count(left) + count(right)
-            throw new NotImplementedException("CountRecursive helper method needs implementation");
+            if (node == null)
+            {
+                return 0;
+            }
+
+            return 1 + CountRecursive(node.Left) + CountRecursive(node.Right);
         }
         
         // ============================================
