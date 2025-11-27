@@ -7,7 +7,7 @@ namespace FileSystemNavigator
     /// <summary>
     /// Binary Search Tree implementation for File System Navigation
     /// 
-    /// STUDENT ASSIGNMENT: Implement the TODO methods in this class
+    /// 
     /// This class demonstrates BST concepts through a practical file system simulation
     /// 
     /// Learning Objectives:
@@ -55,14 +55,14 @@ namespace FileSystemNavigator
         {
             operationCount++;
             
-            // TODO: Implement file creation logic
-            // Hints:
-            // 1. Create FileNode with FileType.File and provided size
-            // 2. Insert into BST using InsertNode helper method
-            // 3. Handle duplicate file names (return false if exists)
-            // 4. Extension will be automatically extracted in FileNode constructor
-            
-            throw new NotImplementedException("CreateFile method needs implementation");
+            if (FindFile(fileName) != null)
+            {
+                return false;
+            }
+
+            var newFile = new FileNode(fileName, FileType.File, size);
+            root = InsertNode(root, newFile);
+            return true;
         }
 
         /// <summary>
@@ -83,13 +83,15 @@ namespace FileSystemNavigator
         {
             operationCount++;
             
-            // TODO: Implement directory creation logic
-            // Hints:
-            // 1. Create FileNode with FileType.Directory
-            // 2. Use same insertion logic as CreateFile but with different type
-            // 3. Directories automatically have size = 0 and no extension
-            
-            throw new NotImplementedException("CreateDirectory method needs implementation");
+            var searchNode = SearchNode(root, directoryName, FileType.Directory);
+            if (searchNode != null)
+            {
+                return false;
+            }
+
+            var newDir = new FileNode(directoryName, FileType.Directory);
+            root = InsertNode(root, newDir);
+            return true;
         }
 
         /// <summary>
@@ -109,14 +111,7 @@ namespace FileSystemNavigator
         public FileNode? FindFile(string fileName)
         {
             operationCount++;
-            
-            // TODO: Implement file search logic
-            // Hints:
-            // 1. Use SearchNode helper method with recursive approach
-            // 2. Compare file names case-insensitively
-            // 3. Return the FileNode.FileData if found
-            
-            throw new NotImplementedException("FindFile method needs implementation");
+            return SearchNode(root, fileName, FileType.File);
         }
 
         /// <summary>
@@ -136,14 +131,12 @@ namespace FileSystemNavigator
         public List<FileNode> FindFilesByExtension(string extension)
         {
             operationCount++;
-            
-            // TODO: Implement extension-based file search
-            // Hints:
-            // 1. Use TraverseAndCollect helper method
-            // 2. Filter by FileType.File AND matching extension
-            // 3. Handle extension format (with or without leading dot)
-            
-            throw new NotImplementedException("FindFilesByExtension method needs implementation");
+            var results = new List<FileNode>();
+            TraverseAndCollect(root, results, node => 
+                node.Type == FileType.File && 
+                (node.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase) || 
+                 node.Extension.Equals("." + extension.TrimStart('.'), StringComparison.OrdinalIgnoreCase)));
+            return results;
         }
 
         /// <summary>
@@ -164,14 +157,14 @@ namespace FileSystemNavigator
         public List<FileNode> FindFilesBySize(long minSize, long maxSize)
         {
             operationCount++;
-            
-            // TODO: Implement size-based file search
-            // Hints:
-            // 1. Validate input parameters (minSize <= maxSize)
-            // 2. Use TraverseAndCollect with size range filter
-            // 3. Only include FileType.File items
-            
-            throw new NotImplementedException("FindFilesBySize method needs implementation");
+            var results = new List<FileNode>();
+            if (minSize > maxSize) return results;
+
+            TraverseAndCollect(root, results, node => 
+                node.Type == FileType.File && 
+                node.Size >= minSize && 
+                node.Size <= maxSize);
+            return results;
         }
 
         /// <summary>
@@ -191,15 +184,12 @@ namespace FileSystemNavigator
         public List<FileNode> FindLargestFiles(int count)
         {
             operationCount++;
+            var allFiles = new List<FileNode>();
+            TraverseAndCollect(root, allFiles, node => node.Type == FileType.File);
             
-            // TODO: Implement largest files search
-            // Hints:
-            // 1. Collect all files using traversal
-            // 2. Sort by Size property (descending)
-            // 3. Take top 'count' items
-            // 4. Handle edge case where count <= 0
-            
-            throw new NotImplementedException("FindLargestFiles method needs implementation");
+            return allFiles.OrderByDescending(f => f.Size)
+                           .Take(count)
+                           .ToList();
         }
 
         /// <summary>
@@ -218,14 +208,15 @@ namespace FileSystemNavigator
         public long CalculateTotalSize()
         {
             operationCount++;
-            
-            // TODO: Implement total size calculation
-            // Hints:
-            // 1. Use recursive helper method to traverse tree
-            // 2. Sum the Size property of all nodes
-            // 3. Handle empty tree case (return 0)
-            
-            throw new NotImplementedException("CalculateTotalSize method needs implementation");
+            return CalculateTotalSizeRecursive(root);
+        }
+
+        private long CalculateTotalSizeRecursive(TreeNode? node)
+        {
+            if (node == null) return 0;
+            return node.FileData.Size + 
+                   CalculateTotalSizeRecursive(node.Left) + 
+                   CalculateTotalSizeRecursive(node.Right);
         }
 
         /// <summary>
@@ -246,14 +237,50 @@ namespace FileSystemNavigator
         {
             operationCount++;
             
-            // TODO: Implement file/directory deletion
-            // Hints:
-            // 1. Find the node to delete first
-            // 2. Handle three cases: no children, one child, two children
-            // 3. For two children case, find inorder successor
-            // 4. Update tree structure properly
+            bool deleted = false;
+            root = DeleteNodeRecursive(root, fileName, FileType.File, ref deleted);
             
-            throw new NotImplementedException("DeleteItem method needs implementation");
+            if (!deleted)
+            {
+                root = DeleteNodeRecursive(root, fileName, FileType.Directory, ref deleted);
+            }
+            
+            return deleted;
+        }
+
+        private TreeNode? DeleteNodeRecursive(TreeNode? node, string fileName, FileType type, ref bool deleted)
+        {
+            if (node == null) return null;
+
+            var target = new FileNode(fileName, type);
+            int comparison = CompareFileNodes(target, node.FileData);
+
+            if (comparison < 0)
+            {
+                node.Left = DeleteNodeRecursive(node.Left, fileName, type, ref deleted);
+            }
+            else if (comparison > 0)
+            {
+                node.Right = DeleteNodeRecursive(node.Right, fileName, type, ref deleted);
+            }
+            else
+            {
+                deleted = true;
+
+                if (node.Left == null) return node.Right;
+                if (node.Right == null) return node.Left;
+
+                TreeNode successor = node.Right;
+                while (successor.Left != null)
+                {
+                    successor = successor.Left;
+                }
+
+                node.FileData = successor.FileData;
+                node.Right = DeleteNodeRecursive(node.Right, successor.FileData.Name, successor.FileData.Type, ref deleted);
+            }
+
+            return node;
         }
 
         // ============================================
@@ -266,24 +293,48 @@ namespace FileSystemNavigator
         /// </summary>
         private TreeNode? InsertNode(TreeNode? node, FileNode fileData)
         {
-            // TODO: Implement recursive BST insertion
-            // Base case: if node is null, create new TreeNode
-            // Recursive case: compare names and go left or right
-            // Use CompareFileNodes for proper ordering
-            throw new NotImplementedException("InsertNode helper method needs implementation");
+            if (node == null)
+            {
+                return new TreeNode(fileData);
+            }
+
+            int comparison = CompareFileNodes(fileData, node.FileData);
+
+            if (comparison < 0)
+            {
+                node.Left = InsertNode(node.Left, fileData);
+            }
+            else if (comparison > 0)
+            {
+                node.Right = InsertNode(node.Right, fileData);
+            }
+            
+            return node;
         }
 
         /// <summary>
         /// Helper method for BST searching
         /// Students should use this in FindFile
         /// </summary>
-        private FileNode? SearchNode(TreeNode? node, string fileName)
+        private FileNode? SearchNode(TreeNode? node, string fileName, FileType type)
         {
-            // TODO: Implement recursive BST search
-            // Base case: if node is null, return null
-            // Base case: if names match, return node.FileData
-            // Recursive case: compare names and go left or right
-            throw new NotImplementedException("SearchNode helper method needs implementation");
+            if (node == null) return null;
+
+            var target = new FileNode(fileName, type);
+            int comparison = CompareFileNodes(target, node.FileData);
+
+            if (comparison == 0)
+            {
+                return node.FileData;
+            }
+            else if (comparison < 0)
+            {
+                return SearchNode(node.Left, fileName, type);
+            }
+            else
+            {
+                return SearchNode(node.Right, fileName, type);
+            }
         }
 
         /// <summary>
@@ -292,11 +343,16 @@ namespace FileSystemNavigator
         /// </summary>
         private void TraverseAndCollect(TreeNode? node, List<FileNode> collection, Func<FileNode, bool> filter)
         {
-            // TODO: Implement in-order traversal with filtering
-            // Base case: if node is null, return
-            // Recursive case: traverse left, process current, traverse right
-            // Add to collection only if filter returns true
-            throw new NotImplementedException("TraverseAndCollect helper method needs implementation");
+            if (node == null) return;
+
+            TraverseAndCollect(node.Left, collection, filter);
+
+            if (filter(node.FileData))
+            {
+                collection.Add(node.FileData);
+            }
+
+            TraverseAndCollect(node.Right, collection, filter);
         }
 
         /// <summary>
@@ -402,7 +458,7 @@ namespace FileSystemNavigator
                 }
                 else
                 {
-                    Console.Write("[null] ");
+                    Console.Write("[-] ");
                 }
             }
             Console.WriteLine();
@@ -429,13 +485,24 @@ namespace FileSystemNavigator
 
             if (root != null)
             {
-                CalculateStats(root, stats);
+                var extensionCounts = new Dictionary<string, int>();
+                CalculateStats(root, stats, extensionCounts);
+
+                if (extensionCounts.Any())
+                {
+                    var mostCommon = extensionCounts.OrderByDescending(x => x.Value).First();
+                    stats.MostCommonExtension = $"{mostCommon.Key} ({mostCommon.Value} files)";
+                }
+                else
+                {
+                    stats.MostCommonExtension = "None";
+                }
             }
 
             return stats;
         }
 
-        private void CalculateStats(TreeNode? node, FileSystemStats stats)
+        private void CalculateStats(TreeNode? node, FileSystemStats stats, Dictionary<string, int> extensionCounts)
         {
             if (node == null) return;
 
@@ -450,14 +517,23 @@ namespace FileSystemNavigator
                     stats.LargestFileSize = file.Size;
                     stats.LargestFile = file.Name;
                 }
+
+                if (!string.IsNullOrEmpty(file.Extension))
+                {
+                    var ext = file.Extension.ToLower();
+                    if (extensionCounts.ContainsKey(ext))
+                        extensionCounts[ext]++;
+                    else
+                        extensionCounts[ext] = 1;
+                }
             }
             else
             {
                 stats.TotalDirectories++;
             }
 
-            CalculateStats(node.Left, stats);
-            CalculateStats(node.Right, stats);
+            CalculateStats(node.Left, stats, extensionCounts);
+            CalculateStats(node.Right, stats, extensionCounts);
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace FileSystemNavigator
                 Total Items: {TotalItems:N0} ({TotalDirectories:N0} directories, {TotalFiles:N0} files)
                 Total Size: {FormatSize(TotalSize)}
                 Operations Performed: {TotalOperations:N0}
-                Session Duration: {SessionDuration:mm\\:ss}
+                Session Duration: {SessionDuration:mm':'ss}
                 Largest File: {LargestFile} ({FormatSize(LargestFileSize)})
                 Most Common Extension: {MostCommonExtension}
                 """;

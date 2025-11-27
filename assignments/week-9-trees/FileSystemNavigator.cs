@@ -262,7 +262,7 @@ namespace FileSystemNavigator
                 Console.WriteLine($"   Files Created: {stats.TotalFiles}");
                 Console.WriteLine($"   Directories Created: {stats.TotalDirectories}");
                 Console.WriteLine($"   Total Operations: {stats.TotalOperations}");
-                Console.WriteLine($"   Session Duration: {stats.SessionDuration:mm\\\\:ss}");
+                Console.WriteLine($"   Session Duration: {stats.SessionDuration:mm':'ss}");
             }
             
             Console.WriteLine("\n🚀 You've practiced essential Binary Search Tree concepts!");
