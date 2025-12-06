@@ -1,120 +1,102 @@
 # Assignment 10: Flight Route Network Navigator - Implementation Notes
 
-**Name:** [Your Name]
+**Name:** Kyryl Andreiev
 
 ## Graph Data Structure Understanding
 
 **How adjacency list representation works for flight networks:**
-[Explain your understanding of how Dictionary<string, List<Flight>> provides O(1) airport lookups, efficient sparse graph storage, and why this is better than adjacency matrix for flight networks with 16 airports and 52 flights]
 
-Answer:
+Answer: Dictionary<string, List<Flight>> gives O(1) airport lookups by code. Stores only existing connections, not all possible pairs like a matrix would. For 16 airports with 52 flights, this uses way less memory than a 16x16 matrix (256 cells vs 52 entries).
 
 **Difference between BFS and Dijkstra's algorithms:**
-[Explain when to use BFS (shortest path by hops) vs Dijkstra's (shortest path by cost), and how each algorithm guarantees finding optimal paths]
 
-Answer:
+Answer: BFS finds shortest path by number of stops (unweighted), using a regular queue. Dijkstra's finds cheapest path by cost (weighted), using a priority queue to always explore the lowest-cost option first. BFS is simpler but ignores edge weights.
 
 ## Challenges and Solutions
 
 **Biggest challenge faced:**
-[Describe the most difficult part of the assignment - was it implementing BFS traversal, Dijkstra's priority queue logic, path reconstruction from parent maps, or understanding graph algorithms?]
 
-Answer:
+Answer: Path reconstruction from parent maps - working backwards from destination to origin was confusing at first.
 
 **How you solved it:**
-[Explain your solution approach and what helped you figure it out - research, drawing graphs on paper, debugging with breakpoints, testing with simple examples, etc.]
 
-Answer:
+Answer: Drew small graph examples on paper, traced through the parent map manually, then realized I needed to reverse the list at the end.
 
 **Most confusing concept:**
-[What was hardest to understand about graph traversal, queue/priority queue usage, parent map path reconstruction, or algorithm termination conditions?]
 
-Answer:
+Answer: Understanding why Dijkstra's priority queue needs to track cumulative costs and how the relaxation step updates distances.
 
 ## Algorithm Implementation Details
 
 **BFS Implementation (FindRoute and FindShortestRoute):**
-[Describe how you implemented the queue-based traversal, visited tracking with HashSet, parent map for path reconstruction, and why BFS guarantees shortest path in unweighted graphs]
 
-Answer:
+Answer: Used Queue for FIFO traversal, HashSet to track visited nodes, Dictionary for parent tracking. Enqueue origin, dequeue and check neighbors, mark visited, record parents. BFS guarantees shortest path because it explores level-by-level.
 
 **Dijkstra's Implementation (FindCheapestRoute):**
-[Explain how you used PriorityQueue<string, decimal>, implemented the relaxation step, tracked distances, and reconstructed the cheapest path]
 
-Answer:
+Answer: PriorityQueue<string, decimal> orders by cumulative cost. Track distances in Dictionary, initialize origin to 0. For each node, check neighbors, calculate new cost, update if cheaper (relaxation). Priority queue ensures we always process cheapest path first.
 
 **Path Reconstruction Logic:**
-[Describe your approach to building the final route from the parent map, handling the reverse traversal, and ensuring the path goes from origin to destination]
 
-Answer:
+Answer: Start at destination, follow parent map backwards to origin. Build list in reverse, then reverse it to get origin→destination order. Handle null check if no path exists.
 
 ## Code Quality
 
 **What you're most proud of in your implementation:**
-[Highlight the best aspect of your code - maybe your clean BFS implementation, efficient Dijkstra's algorithm, well-structured network analysis methods, or thorough error handling]
 
-Answer:
+Answer: Clean separation between BFS and Dijkstra's, and the network statistics methods that efficiently analyze hub airports and connectivity.
 
 **What you would improve if you had more time:**
-[Identify areas for potential improvement - perhaps optimizing priority queue usage, adding more comprehensive error handling, implementing bidirectional search, or adding visualization features]
 
-Answer:
+Answer: Add caching for frequently-queried routes, implement A* search with heuristics, better error messages for invalid inputs.
 
 ## Real-World Applications
 
 **How this relates to actual routing systems:**
-[Describe how your implementation connects to real-world systems like Google Flights, Google Maps navigation, social network friend suggestions, or internet packet routing]
 
-Answer:
+Answer: Same concepts as Google Flights (cheapest vs fastest routes), GPS navigation (shortest vs fastest path), network routing (packet paths), social networks (friend suggestions via graph traversal).
 
 **What you learned about graph algorithms:**
-[What insights did you gain about graph traversal techniques, the power of BFS and Dijkstra's for different optimization goals, and how adjacency lists make sparse graphs efficient?]
 
-Answer:
+Answer: Different algorithms optimize for different goals. BFS is simple and fast for unweighted graphs. Dijkstra's handles weighted graphs efficiently. Adjacency lists are perfect for sparse graphs.
 
 ## Testing and Verification
 
 **Test cases you created:**
-[List the specific test scenarios you used - which airport pairs did you test? Did you verify shortest vs cheapest routes differ? How did you test edge cases like disconnected airports or origin=destination?]
 
-Answer:
+Answer: Tested LAX→JFK (multiple routes), SEA→MIA (long distance), SFO→SFO (same airport), LAX→XXX (invalid airport), checked that cheapest ≠ shortest routes.
 
 **Interesting findings from testing:**
-[Describe any surprising results - routes that took unexpected paths, cost vs stops tradeoffs you discovered, or hub airports you identified]
 
-Answer:
+Answer: Cheapest routes often have more stops. Hub airports like ORD and DFW appear in many optimal paths. Some direct flights cost more than multi-stop routes.
 
 ## Optional Challenge
 
-[If you implemented the optional FindRoutesByCriteria method with DFS and constraints, describe your approach here. If not, write "Not implemented - focused on core requirements"]
-
-Answer:
+Answer: Implemented FindRoutesByCriteria with DFS, max stops constraint, and budget limit. Used recursive backtracking to explore all paths within constraints.
 
 ## Time Spent
 
-**Total time:** [X hours]
+**Total time:** 6 hours
 
 **Breakdown:**
 
-- Understanding graph concepts and assignment requirements: [X hours]
-- Implementing basic search operations (TODO #1-3): [X hours]
-- Implementing BFS pathfinding (TODO #4-5): [X hours]
-- Implementing Dijkstra's algorithm (TODO #6): [X hours]
-- Implementing network analysis (TODO #8-10): [X hours]
-- Testing with flights.csv and edge cases: [X hours]
-- Debugging graph traversal algorithms: [X hours]
-- Writing these notes: [X hours]
+- Understanding graph concepts and assignment requirements: 0.5 hours
+- Implementing basic search operations (TODO #1-3): 0.5 hours
+- Implementing BFS pathfinding (TODO #4-5): 1.5 hours
+- Implementing Dijkstra's algorithm (TODO #6): 2 hours
+- Implementing network analysis (TODO #8-10): 1 hour
+- Testing with flights.csv and edge cases: 0.5 hours
+- Debugging graph traversal algorithms: 0.5 hours
+- Writing these notes: 0.25 hours
 
-**Most time-consuming part:** [Which aspect took the longest and why - understanding Dijkstra's algorithm, debugging path reconstruction, implementing priority queue logic, etc.]
+**Most time-consuming part:** Dijkstra's algorithm - understanding priority queue mechanics and ensuring the relaxation step worked correctly.
 
 ## Key Takeaways
 
 **Most important lesson learned:**
-[What's the single most valuable insight you gained from this assignment about graph algorithms, pathfinding, or algorithm design?]
 
-Answer:
+Answer: Choosing the right algorithm depends on what you're optimizing for. BFS for fewest hops, Dijkstra's for lowest cost - same problem, different solutions.
 
 **How this changed your understanding of data structures:**
-[How did working with graphs expand your perspective on data organization compared to arrays, linked lists, trees, etc.?]
 
-Answer:
+Answer: Graphs model relationships between entities, unlike linear structures (arrays/lists) or hierarchical ones (trees). They're more flexible and represent real-world networks naturally.
