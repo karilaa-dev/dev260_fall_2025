@@ -46,6 +46,14 @@ This repository contains my coursework for DEV 260, where I learned fundamental 
 
 - **Assignment Graphs:** Flight route network navigator implementing BFS for shortest paths and Dijkstra's algorithm for cheapest routes with comprehensive network analysis
 
+### Final Project
+
+**Personal Pantry & Grocery Tracker**
+
+A console-based inventory tool for home cooks to track pantry items, prevent duplicate shopping list entries, and validate whether you have ingredients for a recipe. It uses a `Dictionary<string, PantryItem>` for fast pantry CRUD/lookups, a `HashSet<string>` for a de-duplicated shopping list, and a `List<Recipe>` for the recipe validator.
+
+📁 [View Final Project](./final_project/)
+
 ---
 
 ## Skills Demonstrated
