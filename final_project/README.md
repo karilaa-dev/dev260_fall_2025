@@ -224,7 +224,7 @@ _What was hardest to understand about data structures, algorithm complexity, key
 
 **Your Answer:**
 
-Orginizing code was definetly the hardest, because it impacts how easy and straighforward was writing the rest of the code.
+Organizing code was definitely the hardest, because it impacts how easy and straightforward was writing the rest of the code.
 
 ## Code Quality
 
