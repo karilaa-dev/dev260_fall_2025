@@ -217,7 +217,7 @@ _Explain your solution approach and what helped you figure it out - research, co
 
 **Your Answer:**
 
-Dotnet documentation, google search (to be fair, AI overview usualy had the answer I needed)
+Dotnet documentation, google search (to be fair, AI overview usually had the answer I needed)
 
 **Most confusing concept:**  
 _What was hardest to understand about data structures, algorithm complexity, key comparers, normalization, or organizing your code architecture?_
@@ -233,7 +233,7 @@ _Highlight the best aspect of your code - maybe your data structure choices, cle
 
 **Your Answer:**
 
-I like how easy it is to read. Maybe I put too much effort into that, but not always you have time to to that. I also like how clean the main menu is, it's really nice looking.
+I like how easy it is to read. Maybe I put too much effort into that, but not always you have time to do that. I also like how clean the main menu is, it's really nice looking.
 
 **What you would improve if you had more time:**  
 _Identify areas for potential improvement - perhaps adding more features, optimizing performance, improving error handling, adding data persistence, refactoring for better maintainability, or enhancing the user experience._
